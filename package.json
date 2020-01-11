@@ -1,0 +1,20 @@
+{
+  "name": "snake-lazyhackerthani",
+  "version": "1.0.0",
+  "description": "",
+  "main": "snake.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/step-batch-7/snake-lazyhackerthani.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/step-batch-7/snake-lazyhackerthani/issues"
+  },
+  "homepage": "https://github.com/step-batch-7/snake-lazyhackerthani#readme"
+}
