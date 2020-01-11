@@ -52,6 +52,31 @@ class Snake {
   }
 }
 
+class Food {
+  constructor(colId, rowId) {
+    this.colId = colId;
+    this.rowId = rowId;
+  }
+  get position() {
+    return [this.colId, this.rowId];
+  }
+}
+
+class Game {
+  constructor(snake, ghostSnake, food) {
+    this.snake = snake;
+    this.ghostSnake = ghostSnake;
+    this.food = food;
+  }
+  get status() {
+    return {
+      snake: this.snake,
+      ghostSnake: this.ghostSnake,
+      food: this.food
+    };
+  }
+}
+
 const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 
@@ -79,6 +104,12 @@ const createGrids = function() {
   }
 };
 
+const drawComponents = function({ snake, ghostSnake, food }) {
+  drawSnake(snake);
+  drawSnake(ghostSnake);
+  drawFood(food);
+};
+
 const eraseTail = function(snake) {
   let [colId, rowId] = snake.previousTail;
   const cell = getCell(colId, rowId);
@@ -93,7 +124,7 @@ const drawSnake = function(snake) {
 };
 
 const drawFood = function(food) {
-  let [colId, rowId] = food.getPosition();
+  let [colId, rowId] = food.position;
   const cell = getCell(colId, rowId);
   cell.classList.add('simpleFood');
 };
@@ -111,16 +142,6 @@ const moveAndDrawSnake = function(snake) {
 const attachEventListeners = snake => {
   document.body.onkeydown = handleKeyPress.bind(null, snake);
 };
-
-class Food {
-  constructor(colId, rowId) {
-    this.colId = colId;
-    this.rowId = rowId;
-  }
-  getPosition() {
-    return [this.colId, this.rowId];
-  }
-}
 
 const main = function() {
   const snake = new Snake(
@@ -145,11 +166,11 @@ const main = function() {
 
   const food = new Food(5, 5);
 
+  const game = new Game(snake, ghostSnake, food);
+
   attachEventListeners(snake);
   createGrids();
-  drawSnake(snake);
-  drawSnake(ghostSnake);
-  drawFood(food);
+  drawComponents(game);
 
   setInterval(() => {
     moveAndDrawSnake(snake);
