@@ -92,7 +92,8 @@ const drawSnake = function(snake) {
   });
 };
 
-const drawFood = function([colId, rowId]) {
+const drawFood = function(food) {
+  let [colId, rowId] = food.getPosition();
   const cell = getCell(colId, rowId);
   cell.classList.add('simpleFood');
 };
@@ -148,7 +149,7 @@ const main = function() {
   createGrids();
   drawSnake(snake);
   drawSnake(ghostSnake);
-  drawFood(food.getPosition());
+  drawFood(food);
 
   setInterval(() => {
     moveAndDrawSnake(snake);
