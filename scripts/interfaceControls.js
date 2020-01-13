@@ -70,13 +70,16 @@ const randomlyTurnSnake = snake => {
 };
 
 const setup = function(game) {
-  let { snake, ghostSnake } = game.status;
+  let { snakeStatus, ghostSnakeStatus } = game.status;
   attachEventListeners(game);
   createGrids();
-  drawSnake({ snakeLocation: snake.location, snakeSpecies: snake.species });
   drawSnake({
-    snakeLocation: ghostSnake.location,
-    snakeSpecies: ghostSnake.species
+    snakeLocation: snakeStatus.location,
+    snakeSpecies: snakeStatus.species
+  });
+  drawSnake({
+    snakeLocation: ghostSnakeStatus.location,
+    snakeSpecies: ghostSnakeStatus.species
   });
 };
 

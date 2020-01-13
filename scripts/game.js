@@ -6,11 +6,12 @@ class Game {
   }
   get status() {
     return {
-      snake: this.snake,
-      ghostSnake: this.ghostSnake,
-      food: this.food
+      snakeStatus: getSnakeStatus(this.snake),
+      ghostSnakeStatus: getSnakeStatus(this.ghostSnake),
+      food: this.food.position
     };
   }
+
   moveSnake(keyCode) {
     const leftKey = 37;
     const rightKey = 39;
@@ -29,4 +30,11 @@ class Game {
 
 const arePointsEqual = function(point1, point2) {
   return point1[0] === point2[0] && point1[1] === point2[1];
+};
+
+const getSnakeStatus = function(snake) {
+  return {
+    location: snake.location,
+    species: snake.species
+  };
 };
