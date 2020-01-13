@@ -9,18 +9,15 @@ class Snake {
   get location() {
     return this.positions.slice();
   }
-
   get species() {
     return this.type;
   }
-
   turnLeft() {
     this.direction.turnLeft();
   }
   turnRight() {
     this.direction.turnRight();
   }
-
   move() {
     const [headX, headY] = this.positions[this.positions.length - 1];
     this.previousTail = this.positions.shift();

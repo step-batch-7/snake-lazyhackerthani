@@ -11,20 +11,19 @@ class Game {
       food: this.food.position
     };
   }
-
-  moveSnake(keyCode) {
-    const leftKey = 37;
-    const rightKey = 39;
-    if (keyCode === leftKey) {
-      this.snake.turnLeft();
-    }
-    if (keyCode === rightKey) {
-      this.snake.turnRight();
-    }
+  turnSnakeLeft() {
+    this.snake.turnLeft();
+  }
+  turnSnakeRight() {
+    this.snake.turnRight();
+  }
+  moveSnake() {
+    this.snake.move();
   }
   isFindFood() {
     const snakeHead = this.snake.location[0];
-    return arePointsEqual(this.food.position, snakeHead);
+    if (arePointsEqual(this.food.position, snakeHead)) {
+    }
   }
 }
 
@@ -35,6 +34,7 @@ const arePointsEqual = function(point1, point2) {
 const getSnakeStatus = function(snake) {
   return {
     location: snake.location,
-    species: snake.species
+    species: snake.species,
+    tail: snake.previousTail
   };
 };
