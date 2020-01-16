@@ -24,8 +24,17 @@ class Game {
   turnSnakeRight() {
     this.snake.turnRight();
   }
+  turnGhostSnakeLeft() {
+    this.ghostSnake.turnLeft();
+  }
+  turnGhostSnakeRight() {
+    this.ghostSnake.turnRight();
+  }
   moveSnake() {
     this.snake.move();
+  }
+  moveGhostSnake() {
+    this.ghostSnake.move();
   }
   updateFood(col, row) {
     this.food.update(col, row);

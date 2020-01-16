@@ -60,8 +60,7 @@ const handleKeyPress = game => {
 };
 
 const moveAndDrawSnake = function(snake) {
-  snake.move();
-  eraseTail(snake.previousTail, snake.species);
+  eraseTail(snake.tail, snake.species);
   drawSnake({ snakeLocation: snake.location, snakeSpecies: snake.species });
 };
 
@@ -69,15 +68,20 @@ const attachEventListeners = game => {
   document.body.onkeydown = handleKeyPress.bind(null, game);
 };
 
-const animateSnakes = (snake, ghostSnake) => {
-  moveAndDrawSnake(snake);
-  moveAndDrawSnake(ghostSnake);
+const animateSnakes = game => {
+  game.moveSnake();
+  moveAndDrawSnake(game.status.snakeStatus);
+  game.moveGhostSnake();
+  moveAndDrawSnake(game.status.ghostSnakeStatus);
 };
 
-const randomlyTurnSnake = snake => {
+const randomlyTurnSnake = game => {
   let x = Math.random() * 100;
   if (x > 50) {
-    snake.turnLeft();
+    game.turnGhostSnakeLeft();
+  }
+  if (x < 10) {
+    game.turnGhostSnakeRight();
   }
 };
 
@@ -129,6 +133,7 @@ const gotFood = function(game) {
     game.incrementScore();
     displayScore(game);
     game.growSnake();
+    randomGenerateFood(game);
   }
 };
 
@@ -146,23 +151,27 @@ const randomGenerateFood = function(game) {
   drawFood(foodStatus.position, foodStatus.type);
 };
 
-const main = function() {
+const createNewGame = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = new Food(5, 5, 'simpleFood');
   const scoreCard = new Scorecard();
-  const game = new Game(snake, ghostSnake, food, scoreCard);
+  return new Game(snake, ghostSnake, food, scoreCard);
+};
+
+const main = function() {
+  const game = createNewGame();
   const status = game.status;
   attachEventListeners(game);
   setup(status);
   setInterval(() => {
     gotFood(game);
-    animateSnakes(snake, ghostSnake);
+    animateSnakes(game);
     if (game.isOver()) {
       displayOver();
     }
-  }, 200);
-  setInterval(randomlyTurnSnake, 500, ghostSnake);
+  }, 100);
+  setInterval(randomlyTurnSnake, 500, game);
   const foodGenerator = setInterval(
     () => {
       clearInterval(foodGenerator);
