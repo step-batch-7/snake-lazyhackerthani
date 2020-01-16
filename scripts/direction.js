@@ -8,8 +8,8 @@ class Direction {
     this.heading = initialHeading;
     this.deltas = {};
     this.deltas[EAST] = [1, 0];
-    this.deltas[WEST] = [-1, 0];
     this.deltas[NORTH] = [0, -1];
+    this.deltas[WEST] = [-1, 0];
     this.deltas[SOUTH] = [0, 1];
   }
 

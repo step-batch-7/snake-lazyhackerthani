@@ -26,3 +26,26 @@ h1 {
 .simpleFood {
   background-color: rgb(245, 16, 84);
 }
+.scoreBox {
+  background-color: rgb(247, 232, 214);
+  display: flex;
+  position: absolute;
+  height: 30px;
+  width: 100px;
+  align-items: center;
+  border: 3px solid black;
+}
+.gameOver {
+  /* display: none; */
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: lightyellow;
+  text-align: center;
+  font-size: 200px;
+}
+.hide {
+  display: none;
+}

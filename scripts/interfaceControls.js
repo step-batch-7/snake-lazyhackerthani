@@ -4,7 +4,7 @@ const NUM_OF_ROWS = 60;
 const GRID_ID = 'grid';
 
 const getGrid = () => document.getElementById(GRID_ID);
-const getCellId = (colId, rowId) => colId + '_' + rowId;
+const getCellId = (colId, rowId) => `${colId}_${rowId}`;
 
 const getCell = (colId, rowId) =>
   document.getElementById(getCellId(colId, rowId));
@@ -81,9 +81,7 @@ const randomlyTurnSnake = snake => {
   }
 };
 
-const setup = function(game) {
-  let { snakeStatus, ghostSnakeStatus } = game.status;
-  attachEventListeners(game);
+const setup = function({ snakeStatus, ghostSnakeStatus, foodStatus }) {
   createGrids();
   drawSnake({
     snakeLocation: snakeStatus.location,
@@ -93,6 +91,7 @@ const setup = function(game) {
     snakeLocation: ghostSnakeStatus.location,
     snakeSpecies: ghostSnakeStatus.species
   });
+  drawFood(foodStatus.position, foodStatus.type);
 };
 
 const initSnake = function() {
@@ -117,31 +116,60 @@ const initGhostSnake = function() {
     'ghost'
   );
 };
+const displayOver = () => {
+  document.getElementById('gameOver').setAttribute('class', 'gameOver');
+};
+
+const displayScore = game =>
+  (document.getElementById('score').innerText = game.score);
+
+const gotFood = function(game) {
+  if (game.isFindFood()) {
+    randomGenerateFood(game);
+    game.incrementScore();
+    displayScore(game);
+    game.growSnake();
+  }
+};
 
 const getRandomNumber = function(max) {
   return Math.floor(Math.random() * max);
 };
 
-const randomGenerateFood = function(food) {
-  eraseFood(food.position, food.nature);
+const randomGenerateFood = function(game) {
+  let foodStatus = game.foodStatus;
+  eraseFood(foodStatus.position, foodStatus.type);
   const col = getRandomNumber(NUM_OF_COLS);
   const row = getRandomNumber(NUM_OF_ROWS);
-  food.update(col, row);
-  drawFood(food.position, food.nature);
+  game.updateFood(col, row);
+  foodStatus = game.foodStatus;
+  drawFood(foodStatus.position, foodStatus.type);
 };
 
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-
   const food = new Food(5, 5, 'simpleFood');
-  const game = new Game(snake, ghostSnake, food);
-  setup(game);
-  drawFood(food.position, food.nature);
+  const scoreCard = new Scorecard();
+  const game = new Game(snake, ghostSnake, food, scoreCard);
+  const status = game.status;
+  attachEventListeners(game);
+  setup(status);
   setInterval(() => {
-    animateSnakes(snake, ghostSnake);
     gotFood(game);
+    animateSnakes(snake, ghostSnake);
+    if (game.isOver()) {
+      displayOver();
+    }
   }, 200);
   setInterval(randomlyTurnSnake, 500, ghostSnake);
-  setInterval(randomGenerateFood, 5000, food);
+  const foodGenerator = setInterval(
+    () => {
+      clearInterval(foodGenerator);
+      randomGenerateFood;
+      setInterval(randomGenerateFood, 15000, game);
+    },
+    15000,
+    game
+  );
 };

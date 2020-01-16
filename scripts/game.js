@@ -1,15 +1,22 @@
 class Game {
-  constructor(snake, ghostSnake, food) {
+  constructor(snake, ghostSnake, food, scoreCard) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
+    this.scoreCard = scoreCard;
   }
   get status() {
     return {
       snakeStatus: getSnakeStatus(this.snake),
       ghostSnakeStatus: getSnakeStatus(this.ghostSnake),
-      food: this.food.position
+      foodStatus: this.foodStatus
     };
+  }
+  get foodStatus() {
+    return { position: this.food.position, type: this.food.nature };
+  }
+  get score() {
+    return this.scoreCard.score;
   }
   turnSnakeLeft() {
     this.snake.turnLeft();
@@ -20,10 +27,25 @@ class Game {
   moveSnake() {
     this.snake.move();
   }
+  updateFood(col, row) {
+    this.food.update(col, row);
+  }
   isFindFood() {
-    const snakeHead = this.snake.location[0];
-    if (arePointsEqual(this.food.position, snakeHead)) {
-    }
+    const snakeHead = this.snake.location[this.snake.location.length - 1];
+    return arePointsEqual(this.food.position, snakeHead);
+  }
+  incrementScore() {
+    this.scoreCard.update(1);
+  }
+  growSnake() {
+    this.snake.growHead();
+  }
+  isOver() {
+    const snakeHead = this.snake.location[this.snake.location.length - 1];
+    const snakeBody = this.ghostSnake.location.concat(
+      this.snake.location.slice(0, -1)
+    );
+    return snakeBody.some(snakePart => arePointsEqual(snakePart, snakeHead));
   }
 }
 

@@ -19,11 +19,19 @@ class Snake {
     this.direction.turnRight();
   }
   move() {
-    const [headX, headY] = this.positions[this.positions.length - 1];
     this.previousTail = this.positions.shift();
-
+    this.growHead();
+  }
+  growHead() {
+    const [headX, headY] = this.positions[this.positions.length - 1];
     const [deltaX, deltaY] = this.direction.delta;
+    const x = getNumberInRange(headX + deltaX, NUM_OF_COLS);
+    const y = getNumberInRange(headY + deltaY, NUM_OF_ROWS);
 
-    this.positions.push([headX + deltaX, headY + deltaY]);
+    this.positions.push([x, y]);
   }
 }
+
+const getNumberInRange = function(id, max) {
+  return id < 0 ? (id + max) % max : id % max;
+};
